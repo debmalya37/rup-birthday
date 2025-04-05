@@ -3,7 +3,8 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IUser extends Document {
   username: string;
-  password: string; // In production, store a hashed password
+  password: string;
+  email?: string;
   lovedOne: string;
   relationshipYears: number;
   age: number;
@@ -15,6 +16,7 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  email: { type: String }, // ✅ Email added here (NO unique index)
   lovedOne: { type: String },
   relationshipYears: { type: Number },
   age: { type: Number },

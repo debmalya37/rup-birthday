@@ -2,12 +2,12 @@
 import { NextResponse } from "next/server";
 import dbConnect from  "@/lib/dbConnect"; // your MongoDB connection utility
 import User from "../../../../models/User";
-
 export async function POST(req: Request) {
   await dbConnect();
   const {
     username,
     password,
+    email, // ✅ Add email
     lovedOne,
     relationshipYears,
     age,
@@ -15,15 +15,16 @@ export async function POST(req: Request) {
     comingOnlineTime,
     nextDatePlan,
   } = await req.json();
-  
+
   if (!username || !password) {
     return NextResponse.json({ error: "Username and password are required" }, { status: 400 });
   }
-  
+
   try {
     const newUser = new User({
       username,
       password,
+      email, // ✅ Add to new user
       lovedOne,
       relationshipYears,
       age,

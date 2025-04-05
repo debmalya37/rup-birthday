@@ -9,6 +9,7 @@ export default function SignUp() {
   const [form, setForm] = useState({
     username: "",
     password: "",
+    email: "", // ✅ added
     lovedOne: "",
     relationshipYears: "",
     age: "",
@@ -16,6 +17,7 @@ export default function SignUp() {
     comingOnlineTime: "",
     nextDatePlan: "",
   });
+  
   const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +54,15 @@ export default function SignUp() {
             onChange={handleChange}
             className="w-full p-2 mb-2 border border-gray-300 rounded"
           />
+          <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full p-2 mb-2 border border-gray-300 rounded"
+            />
+
           <input
             name="password"
             type="password"
