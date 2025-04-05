@@ -36,29 +36,41 @@ export default function CoupleGoalsPage() {
     }
   }, []);
 
-  const fetchGoals = async () => {
-    const res = await fetch("/api/couple-goals");
+  const fetchGoals = React.useCallback(async () => {
+    if (!user?.username) return;
+
+    const res = await fetch(`/api/couple-goals?username=${user.username}`);
     const data = await res.json();
     setCoupleGoals(data);
-  };
+  }, [user?.username]);
 
   useEffect(() => {
     fetchGoals();
-  }, []);
+  }, [fetchGoals]);
 
   const addGoal = async (e: React.FormEvent) => {
     e.preventDefault();
+  
+    if (!user) return;
+  
     const res = await fetch("/api/couple-goals", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ goal, deadline }),
+      body: JSON.stringify({
+        goal,
+        deadline,
+        creator: user.username,
+        lovedOne: user.lovedOne, // assuming you store this in localStorage too
+      }),
     });
+  
     if (res.ok) {
       setGoal("");
       setDeadline("");
       fetchGoals();
     }
   };
+  
 
   const updateGoalProgress = async () => {
     if (!selectedGoal) return;
@@ -76,7 +88,7 @@ export default function CoupleGoalsPage() {
       setActiveTab("add");
     }
   };
-
+  
   return (
     <>
       <Navbar />
